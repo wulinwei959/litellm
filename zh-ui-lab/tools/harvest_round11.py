@@ -1,0 +1,267 @@
+#!/usr/bin/env python3
+"""把"交互审计命中且未覆盖"的文案批量落成词典。
+
+只按前缀认领原文，键一律取未覆盖清单里的完整源码文本，避免我手抄时被截断。
+"""
+import io
+import json
+import sys
+
+LAB = r"D:\zh-ui-lab"
+todo = json.load(io.open(LAB + r"\todo-interaction.json", encoding="utf-8"))
+existing = json.load(io.open(LAB + r"\all-zh.json", encoding="utf-8"))
+
+# 按前缀 -> 中文。前缀必须在待译集里唯一命中。
+PAIRS = [
+    ("Hide New Feature Indicators", "隐藏新功能提示"),
+    ("Hide All Prompts", "隐藏全部提示词"),
+    ("Hide Blog Posts", "隐藏博客文章"),
+    ("Hide Bouncing Icon", "隐藏图标动效"),
+    ("Hide LiteAdmin", "隐藏智能助手"),
+    ("Upgrade to Premium", "升级到专业版以解锁高级功能"),
+    ("Copy user ID", "复制用户 ID"),
+    ("Toggle hide new feature indicators", "切换：隐藏新功能提示"),
+    ("Toggle hide all prompts", "切换：隐藏全部提示词"),
+    ("Toggle hide blog posts", "切换：隐藏博客文章"),
+    ("Toggle hide bouncing icon", "切换：隐藏图标动效"),
+    ("Toggle hide LiteAdmin", "切换：隐藏智能助手"),
+    ("Development", "开发环境"),
+    ("✨ Security Settings", "✨ 安全设置"),
+    ("SSO Configuration Deprecated", "SSO 配置已废弃"),
+    ("Editing SSO Settings on this page is deprecated",
+     "在本页编辑 SSO 设置已废弃，后续版本会移除，请改用“SSO 设置”页。"),
+    ("Allowed IPs", "允许访问的 IP"),
+    ("UI Access Control", "界面访问控制"),
+    ("Login without SSO", "不走 SSO 登录"),
+    ("If you need to login without sso", "如果需要不走 SSO 登录，可访问"),
+    ("Disable model add for internal users", "禁止内部用户添加模型"),
+    ("Disable team admin delete team user", "禁止团队管理员删除团队成员"),
+    ("Require authentication for public AI Hub", "公开 AI Hub 需要登录"),
+    ("Forward client headers to LLM API", "向 LLM 接口转发客户端请求头"),
+    ("Forward LLM provider auth headers", "向服务商转发鉴权请求头"),
+    ("If enabled, shows the Projects feature in the UI sidebar",
+     "启用后，界面侧栏会出现“项目”功能，密钥管理里也会出现项目字段。"),
+    ("Disable agents for internal users", "禁止内部用户使用智能体"),
+    ("Allow agents for team admins", "允许团队管理员使用智能体"),
+    ("If true, internal users cannot access agent management endpoints or the Agents page in the UI.",
+     "启用后，内部用户不能访问智能体管理接口，也看不到界面上的“智能体”页面。"),
+    ("If true, team admins are exempt from the agents disable restriction (only takes effect when disable_agents_for_internal_users is true).",
+     "启用后，团队管理员不受“禁止智能体”限制（仅在关闭智能体时生效）。"),
+    ("Disable vector stores for internal users", "禁止内部用户使用向量库"),
+    ("Allow vector stores for team admins", "允许团队管理员使用向量库"),
+    ("If true, internal users cannot access vector store management endpoints or the Vector Stores page in the UI.",
+     "启用后，内部用户不能访问向量库管理接口，也看不到界面上的“向量库”页面。"),
+    ("If true, team admins are exempt from the vector stores disable restriction (only takes effect when disable_vector_stores_for_internal_users is true).",
+     "启用后，团队管理员不受“禁止向量库”限制（仅在关闭向量库时生效）。"),
+    ("Scope user search to organization", "用户搜索限定在本组织内"),
+    ("If enabled, the user search endpoint (/user/filter/ui) restricts results by organization. When off, any authenticated user can search all users.",
+     "启用后，用户搜索接口（/user/filter/ui）会按组织限定结果；关闭时全员可搜。"),
+    ("Disable custom Virtual key values", "禁止自定义虚拟密钥值"),
+    ("If true, users cannot specify custom key values", "启用后，用户不能自定义密钥值，所有密钥均由系统生成。"),
+    ("Internal User Page Visibility", "内部用户页面可见性"),
+    ("Not set (all pages visible)", "未设置（全部页面可见）"),
+    ("By default, all pages are visible to internal users", "默认所有页面对内部用户可见；勾选指定页面即可收紧可见范围。"),
+    ("Configure Page Visibility", "设置页面可见性"),
+    ("Team admin editable fields", "团队管理员可编辑字段"),
+    ("Team admins cannot edit team settings", "团队管理员不可编辑团队设置"),
+    ("Team settings fields a team admin may change", "指定团队管理员在自己管理的团队上可以修改的设置项。"),
+    ("This proxy version does not support enabling any team settings fields",
+     "当前网关版本尚不支持开放任何团队设置字段给团队管理员。"),
+    ("User Banner", "用户公告栏"),
+    ("Publish user banner", "发布用户公告"),
+    ("Save banner", "保存公告"),
+    ("If true, requires authentication for accessing the public AI Hub.", "启用后，访问公开 AI Hub 也需要登录。"),
+    ("**Scheduled maintenance** tonight at 10 PM UTC", "**今晚 UTC 22:00 计划维护**，详见[状态页](https://example.com)。"),
+    ("Banner severity", "公告级别"),
+    ("Proxy-wide settings that control how request and response data are written to spend logs",
+     "网关级设置，决定请求与响应数据如何写入花费日志。"),
+    ("Store Prompts in Spend Logs", "在花费日志中保存提示词"),
+    ("Maximum Spend Logs Retention Period (Optional)", "花费日志最长保留时长（可选）"),
+    ("Spend Logs Cleanup Batch Size (Optional)", "花费日志清理单批条数（可选）"),
+    ("Spend Logs Cleanup Max Batches (Optional)", "花费日志清理最多批次数（可选）"),
+    ("Spend Logs Cleanup Run Budget (Optional)", "花费日志清理单次运行预算（可选）"),
+    ("Spend Logs Cleanup Batch Timeout (Optional)", "花费日志清理单批超时（可选）"),
+    ("SSO Provider", "SSO 提供方"),
+    ("Proxy Admin Email", "网关管理员邮箱"),
+    ("Connection Settings", "连接设置"),
+    ("Redis URL", "Redis 地址"),
+    ("Full Redis/Valkey connection URL", "完整的 Redis/Valkey 连接地址（如 redis://:password@host:6379/1）。设置后优先于下面的主机、端口、密码等字段。"),
+    ("Redis server hostname or IP address", "Redis 服务器主机名或 IP 地址"),
+    ("Redis server port number", "Redis 服务器端口"),
+    ("Database Index", "数据库序号"),
+    ("Logical database index to isolate the cache", "用于隔离缓存的逻辑数据库序号（如 redis://host:6379/1 中的 1）"),
+    ("Redis server password", "Redis 服务器密码"),
+    ("Redis server username (if required)", "Redis 服务器用户名（如需要）"),
+    ("No guardrails available", "暂无护栏"),
+    ("Guardrail Testing Playground", "护栏测试试验台"),
+    ("Select Guardrails to Test", "选择要测试的护栏"),
+    ("Choose one or more guardrails from the left sidebar", "从左侧栏选择一个或多个护栏，即可开始测试并对比结果。"),
+    ("Add Provider Guardrail", "添加服务商护栏"),
+    ("Create Custom Code Guardrail", "创建自定义代码护栏"),
+    ("Submit Guardrail for Review", "提交护栏审核"),
+    ("Your guardrail will be sent for admin review", "护栏会先送管理员审核，通过后才会生效。"),
+    ("Pre Call", "调用前"),
+    ("API Base URL", "接口基础地址"),
+    ("Additional litellm_params (optional)", "额外 litellm_params（可选）"),
+    ("Guardrail Info (optional)", "护栏附加信息（可选）"),
+    ("Submit for Review", "提交审核"),
+    ("e.g. pii-detection", "例如 pii-detection"),
+    ("In Config", "配置内"),
+    ("✨ Enterprise Feature", "✨ 企业版功能"),
+    ("Update Settings", "更新设置"),
+    ("Add Logging Callback", "添加日志回调"),
+    ("LiteLLM Docs: Logging", "LiteLLM 文档：日志"),
+    ("Choose a logging callback...", "选择日志回调…"),
+    ("Private IP Ranges", "私有网段"),
+    ("Your current IP:", "你当前的 IP："),
+    ("Suggested range:", "建议网段："),
+    ("Your Private Network Ranges", "你的私有网段"),
+    ("Enter CIDR ranges (e.g., 10.0.0.0/8)", "填写 CIDR 网段（如 10.0.0.0/8）。留空则使用标准私有网段。"),
+    ("Allowed Clients", "允许的客户端"),
+    ("Client Identity Header (less secure)", "客户端身份请求头（安全性较低）"),
+    ("Leave empty to use defaults: 10.0.0.0/8", "留空则使用默认值：10.0.0.0/8、172.16.0.0/12、192.168.0.0/16、127.0.0.0/8"),
+    ("Leave empty to identify clients by JWT only", "留空则仅用 JWT 识别客户端，例如 x-mcp-client"),
+    ("Client identity header", "客户端身份请求头"),
+    ("Recently updated", "最近更新"),
+    ("Name (A→Z)", "名称（A→Z）"),
+    ("Health (unhealthy first)", "健康度（异常优先）"),
+    ("e.g. Coding CLI", "例如 Coding CLI"),
+    ("e.g. 0oa1b2c3d4e5f6g7h8i9", "例如 0oa1b2c3d4e5f6g7h8i9"),
+    ("Create memory", "新建记忆"),
+    ("(optional JSON)", "（可选 JSON）"),
+    ("e.g. user_role", "例如 user_role"),
+    ("What the agent should remember…", "希望智能体记住的内容…"),
+    ("LiteLLM Model Name(s)", "LiteLLM 模型名"),
+    ("The model name LiteLLM will send to the LLM API", "LiteLLM 会把这个模型名发给上游 LLM 接口"),
+    ("Model Mappings", "模型映射"),
+    ("- LiteLLM endpoint to use when health checking this model", "- 健康检查该模型时使用的 LiteLLM 端点"),
+    ("Either select existing credentials OR enter new provider credentials below",
+     "要么选择已有凭证，要么在下方填写新的服务商凭证"),
+    ("Additional Model Info Settings", "模型信息扩展设置"),
+    ("Team-BYOK Model", "团队自带密钥模型"),
+    ("Test Connect", "测试连接"),
+    ("Select existing groups or type to create new ones", "选择已有分组，或直接输入新建"),
+    ("Auto routers", "自动路由"),
+    ("Auto routers sit above your deployments", "自动路由位于你的部署之上，按每次请求挑选模型。调用方式与普通模型一致，客户端无需改动。"),
+    ("Routes to", "路由到"),
+    ("Default model", "默认模型"),
+    ("No auto routers yet", "还没有自动路由"),
+    ("Create an auto router to pick the right model per request", "创建一个自动路由，按请求挑选合适的模型，而不是固定某一个。"),
+    ("Retry Policy Scope:", "重试策略作用域："),
+    ("Global Default", "全局默认"),
+    ("Global Retry Policy", "全局重试策略"),
+    ("Default retry settings applied to all model groups unless overridden", "未单独覆盖时，所有模型组共用的重试设置。"),
+    ("Shared Spend", "共享花费"),
+    ("No model access groups yet", "还没有模型访问组"),
+    ("Put a deployment in an access group from its model settings",
+     "先在模型的设置里把部署加入某个访问组，再回到这里为该组设置共享预算。"),
+    ("All Available Models", "全部可用模型"),
+    ("Store Model in DB", "把模型存入数据库"),
+    ("Stream responses", "流式返回"),
+    ("Simulate failure to test fallbacks", "模拟失败以测试降级"),
+    ("Help: Stream responses", "说明：流式返回"),
+    ("Help: Simulate failure to test fallbacks", "说明：模拟失败以测试降级"),
+    ("Header Name", "请求头名称"),
+    ("Header Value", "请求头取值"),
+    ("Unsaved changes", "有未保存的修改"),
+    ("PRETTY", "美化"),
+    ("DOTPROMPT", "点分提示"),
+    ("No tools added", "尚未添加工具"),
+    ("Developer message", "开发者消息"),
+    ("Optional system instructions for the model", "可选的、给模型的系统指令"),
+    ("Prompt messages", "提示词消息"),
+    ("Use", "使用"),
+    ("syntax for template variables", "语法书写模板变量"),
+    ("Enter task specifics. Use {{template_variables}} for dynamic inputs",
+     "填写任务要求。动态输入请用 {{template_variables}}"),
+    ("Detected variables:", "检测到的变量："),
+    ("Add message", "添加消息"),
+    ("Fill in template variables to start testing", "先填写模板变量再开始测试"),
+    ("Fill in the variables above, then type a message to start testing",
+     "填好上面的变量后，输入一条消息即可开始测试"),
+    ("Please fill in all template variables above", "请先填写完整的模板变量"),
+    ("Missing:", "缺少："),
+    ("Prompt name", "提示词名称"),
+    ("e.g., You are a helpful assistant...", "例如：你是一个乐于助人的助手…"),
+    ("Enter prompt content...", "输入提示词内容…"),
+    ("Staging", "预发环境"),
+    ("Production", "生产环境"),
+    ("Create Routing Group", "新建路由分组"),
+    ("Use this name as the model in API calls", "在接口调用里把这个名字当作模型名，LiteLLM 会把请求转给分组内的某个模型。"),
+    ("Models from your model list that this group routes between",
+     "该分组在其间做路由的模型，取自你的模型列表。一个模型只能属于一个非优先级分组。"),
+    ("Add New Search Tool", "添加联网搜索工具"),
+    ("Search Tool Name", "搜索工具名称"),
+    ("Search Provider", "搜索服务商"),
+    ("Add Search Tool", "添加搜索工具"),
+    ("e.g., perplexity-search, my-tavily-tool", "例如 perplexity-search、my-tavily-tool"),
+    ("Select a search provider", "选择搜索服务商"),
+    ("Enter your API key", "填写你的 API 密钥"),
+    ("Brief description of this search tool's purpose", "简述这个搜索工具的用途"),
+    ("These settings will be applied by default when creating new teams", "以下设置会作为新建团队的默认值。"),
+    ("Maximum budget (in USD) for new automatically created teams", "自动新建团队的预算上限（美元）。"),
+    ("How frequently the team's budget resets", "团队预算的重置频率。"),
+    ("Maximum tokens per minute allowed across all models", "全部模型合计的每分钟最大 Token 数。"),
+    ("Maximum requests per minute allowed across all models", "全部模型合计的每分钟最大请求数。"),
+    ("Access & Permissions", "访问与权限"),
+    ("Default Organization", "默认组织"),
+    ("Teams created without an explicit organization are assigned to this organization",
+     "未指定组织的团队会归入这个组织。"),
+    ("Default list of models that new teams can access", "新建团队默认可访问的模型列表。"),
+    ("Team Member Permissions", "团队成员权限"),
+    ("Default permissions granted to members of newly created teams",
+     "新建团队成员默认获得的权限；/key/info 与 /key/health 始终包含。"),
+    ("Applied to every new internal user created through SSO",
+     "适用于通过 SSO 或用户管理接口新建的每一个内部用户。"),
+    ("No reset", "不重置"),
+    ("Default Models", "默认模型"),
+    ("Default Teams", "默认团队"),
+    ("+ Add Vector Store", "+ 添加向量库"),
+    ("Files", "文件"),
+    ("No vector stores", "暂无向量库"),
+    ("Connect a vector store to enable retrieval-augmented generation", "连接向量库后才能启用检索增强生成。"),
+    ("No vector stores available. Create one first to test it", "没有可用的向量库，请先创建一个再测试。"),
+]
+
+SKIP_PREFIX = ("LiteLLM",)  # 品牌名，保持原文
+
+
+def resolve(prefix):
+    texts = sorted({e["text"] for e in todo})
+    exact = [t for t in texts if t == prefix]
+    if len(exact) == 1:
+        return exact[0], None
+    uniq = [t for t in texts if t.startswith(prefix)]
+    if len(uniq) == 0:
+        return prefix, "API"  # 前端没有这条，按后端下发文案处理
+    if len(uniq) != 1:
+        return None, f"前缀「{prefix}」命中 {len(uniq)} 条: {uniq[:3]}"
+    return uniq[0], None
+
+
+def main():
+    ui, api, errors = {}, {}, []
+    for prefix, zh in PAIRS:
+        text, flag = resolve(prefix)
+        if flag not in (None, "API"):
+            errors.append(flag)
+            continue
+        bucket = api if flag == "API" else ui
+        old = existing.get(text)
+        if old and old != zh:
+            errors.append("与既有词典冲突: %s 既有=%r 本次=%r" % (text[:40], old, zh))
+            continue
+        bucket[text] = zh
+    if errors:
+        print(chr(10).join(errors))
+        return 1
+    ui_path = LAB + chr(92) + "round11-zh.json"
+    api_path = LAB + chr(92) + "api-zh11.json"
+    json.dump(ui, io.open(ui_path, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    json.dump(api, io.open(api_path, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    print("UI 词典:", len(ui), "接口词典:", len(api))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

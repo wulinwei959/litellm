@@ -1,0 +1,14 @@
+{
+  "Search MCP servers...": "搜索 MCP 服务器……",
+  "No MCP servers configured": "尚未配置 MCP 服务器",
+  "No MCP server submissions match your filters.": "没有符合筛选条件的 MCP 服务器提交。",
+  "Enable semantic filtering of MCP tools based on query relevance": "启用基于查询相关性的 MCP 工具语义过滤",
+  "Filter MCP tools semantically based on query relevance. This reduces context window size and improves tool selection accuracy. Click 'Save Settings' to apply changes across all pods (takes effect within 10 seconds).": "按查询相关性对 MCP 工具做语义过滤，可缩小上下文体积并提升工具选择准确率。点击“保存设置”后变更会下发到所有 pod（10 秒内生效）。",
+  "Define which IP ranges are part of your private network. Callers from these IPs can see all MCP servers. Callers from any other IP can only see servers marked \"Available on Public Internet\".": "用于界定哪些 IP 段属于你的私有网络。来自这些 IP 的调用方可以看到全部 MCP 服务器，其他 IP 只能看到标记为“可在公网访问”的服务器。",
+  "Only the MCP client applications listed here can use the gateway. Leave empty to allow every client. A client that authenticates with a JWT is identified by the claim named in litellm_jwtauth.mcp_client_id_jwt_field in your proxy config (for example azp or client_id), which your identity provider asserts and the client cannot change. Any other client is identified by the request header configured below, if you enable one.": "只有这里列出的 MCP 客户端应用才能使用该网关，留空则允许所有客户端使用。用 JWT 认证的客户端，其身份取自网关配置中 litellm_jwtauth.mcp_client_id_jwt_field 指定的声明（例如 azp 或 client_id），该声明由身份提供商签发、客户端无法篡改。其余客户端则按下文配置的请求头来识别（需先启用）。",
+  "Click a client to edit or remove it. Leave the list empty to allow every client. Every MCP request from an unlisted client, or from one with no resolvable identity, gets a 403.": "点击客户端可编辑或移除它，列表留空即允许所有客户端使用。未列出的客户端、或身份无法解析的客户端发出的 MCP 请求都会被拒绝并返回 403。",
+  "No servers match your search": "没有匹配搜索结果的服务器",
+  "No MCP servers configured. Click '+ Add New MCP Server' to get started.": "尚未配置 MCP 服务器。点击“+ 新建 MCP 服务器”开始添加。",
+  "No MCP servers configured. Add servers in Tools -> MCP Servers.": "尚未配置 MCP 服务器。请在“工具 -> MCP 服务器”中添加。",
+  "Search MCP servers by name or description": "按名称或描述搜索 MCP 服务器"
+}

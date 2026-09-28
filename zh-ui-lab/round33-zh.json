@@ -1,0 +1,12 @@
+{
+  "LiteLLM Slack community": "LiteLLM Slack 社区",
+  "An MCP Access Group is a set of users or teams that have permission to access specific MCP servers. Use access groups to control and organize who can connect to which servers.": "MCP 访问组是一组有权访问特定 MCP 服务器的用户或团队。可用访问组来管控并组织谁能连接哪些服务器。",
+  "Finds every published model whose name contains what you type, across all pages. Try 'grok', 'claude', 'gpt-4', or 'sonnet'": "在所有页面中查找名称包含所输内容的已发布模型。可试试 'grok'、'claude'、'gpt-4' 或 'sonnet'",
+  "Cost per 1M tokens": "每 100 万 token 成本",
+  "Cost per 1M tokens; /s is cost per second of output": "每 100 万 token 成本；/s 表示每秒输出的成本",
+  "Select MCP servers or toolsets to use in your conversation.": "选择要在本次对话中使用的 MCP 服务器或工具集。",
+  "Counted by the gateway when it answers a request, independent of spend logging. Deployment-wide, so it will not match the per-key or per-model breakdowns below.": "由网关在响应请求时统计，与支出日志相互独立。该数据覆盖整个部署，因此不会与下方按密钥或按模型的明细一致。",
+  "SSO ID is the ID of the user in the SSO provider. If the user is not using SSO, this will be null.": "SSO ID 是该用户在单点登录提供商中的 ID。若用户未使用单点登录，此项为空。",
+  "Optional: Give your vector store a meaningful name": "可选：为你的向量库取一个有意义的名称",
+  "Optional: Describe what this vector store contains": "可选：说明这个向量库包含的内容"
+}

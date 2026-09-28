@@ -1,0 +1,23 @@
+{
+ "Timezone": "时区",
+ "Min": "最小值",
+ "Created from": "创建时间起",
+ "Created to": "创建时间止",
+ "Minimum max budget": "预算上限最小值",
+ "Maximum max budget": "预算上限最大值",
+ "Show API key": "显示 API 密钥",
+ "Not Set": "未设置",
+ "Primary Model": "主模型",
+ "Fallback Chain": "降级链",
+ "Export CSV": "导出 CSV",
+ "Select Organization": "选择组织",
+ "no rules set": "未设置规则",
+ "Semantic Tool Filtering": "语义工具过滤",
+ "Failed to update cache settings": "缓存设置更新失败",
+ "In DB": "已入库",
+ "New users receive an email invite only when an email integration (SMTP, Resend, or SendGrid) is configured.": "只有在配置了邮件集成（SMTP、Resend 或 SendGrid）时，新用户才会收到邮件邀请。",
+ "Cache": "缓存",
+ "Models outside non-priority groups use the proxy's top-level routing strategy.": "不属于非优先级分组的模型，使用网关的顶层路由策略。",
+ "Direct requests to a member model keep their existing routing behavior.": "直连到成员模型的请求，保持其原有路由行为。",
+ "User's role (one of: \"proxy_admin\", \"proxy_admin_viewer\", \"internal_user\", \"internal_user_viewer\")": "用户角色（取值之一：proxy_admin、proxy_admin_viewer、internal_user、internal_user_viewer）"
+}

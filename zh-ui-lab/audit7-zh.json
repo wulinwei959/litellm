@@ -1,0 +1,21 @@
+{
+ "{} is on a draft deprecation list": "{}已被列入拟废弃清单",
+ "{} is one of several experimental features we're considering removing, potentially as early as {}.": "{}是多个正在考虑下线（最早可能于 {}）的实验性功能之一。",
+ "{} tokens compressed": "已压缩 {} 个 Token",
+ "Running total saved · {}": "累计节省 · {}",
+ "Routing Strategy:": "路由策略：",
+ "Enable Tag Filtering": "启用标签过滤",
+ "Learn more in the documentation ->": "详见文档",
+ "Showing {}-{} of {}": "显示 {}-{}，共 {}",
+ "Admin (All Permissions)": "管理员（全部权限）",
+ "0 tokens compressed": "已压缩 0 个 Token",
+ "Showing 1-1 of 1": "显示 1-1，共 1",
+ "{0} is on a draft deprecation list": "{0}已被列入拟废弃清单",
+ "{0} is one of several experimental features we're considering removing, potentially as early as {1}. This list is a draft and is not final. If you rely on this feature, please share feedback on the": "{0}是多个正在考虑下线的实验性功能之一，最早可能于 {1} 移除。该清单尚为草案、并未定稿。若你依赖此功能，请在下面的",
+ "{0} tokens compressed": "已压缩 {0} 个 Token",
+ "Show all ({0})": "展开全部 ({0})",
+ "Sort options for {0}": "{0}排序选项",
+ "Showing {0}-{1} of {2}": "显示 {0}-{1}，共 {2}",
+ "deprecation discussion": "弃用讨论",
+ "September 1, 2026": "2026 年 9 月 1 日"
+}

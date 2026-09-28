@@ -1,0 +1,12 @@
+services:
+  litellm:
+    environment:
+      # 指向下面挂载的中文面板静态导出目录，整体替换镜像内置的 /ui
+      LITELLM_UI_PATH: /opt/ui-zh
+      # 让面板读容器内的本地策略模板，策略说明才会走接口文案映射层
+      LITELLM_LOCAL_POLICY_TEMPLATES: "true"
+      # 复制成 overlay-ui.yml 后换成你自己的口令；真实密钥不要提交
+      LITELLM_MASTER_KEY: <在此填入 master key>
+    volumes:
+      # 由 verify_all.sh 从 dash/out 同步过来，路径按本机情况改
+      - D:/zh-ui-lab/ui-mount:/opt/ui-zh

@@ -1,0 +1,10 @@
+{
+ "A model access group can carry one budget that every key granted the group by name draws from together. Keys that reach the group's models through a wildcard or all-proxy-models are not charged against it.": "一个模型访问组可以挂一份预算，凡按名称被授予该组的密钥共用这份额度；通过通配符或团队继承拿到模型的密钥不走这份预算。",
+ "Cap this team's spend on individual models, each with its own reset window. Every key on the team shares the cap unless the key sets its own budget for that model.": "为该团队在单个模型上的花费设置上限，每个上限可有自己的重置周期。团队内所有密钥共享该上限，除非密钥自行设置了更低的限额。",
+ "Forwards provider auth headers (x-api-key, x-goog-api-key, api-key, ocp-apim-subscription-key) to the upstream LLM, overriding any deployment-configured key for that request. Enable for Claude Code BYOK (clients bring their own API key). Independent of the client-headers toggle — enable only the one(s) you need.": "向下游 LLM 转发服务商鉴权请求头（x-api-key、x-goog-api-key、api-key、ocp-apim-subscription-key），会覆盖部署中已配置的密钥。",
+ "Node (Single Instance)": "节点（单实例）",
+ "Note: Only pages accessible to internal user roles are shown here. Admin-only pages are excluded as they cannot be made visible to internal users regardless of this setting.": "注意：这里只列出内部用户角色可访问的页面。仅管理员可见的页面不会出现在列表中，因为无论如何设置都不会对内部用户开放。",
+ "Optional header whose value names the client for callers without a JWT identity. Clients pick this value themselves, so it is a policy control rather than a security boundary. Without it, callers that do not carry the JWT claim are rejected while the allowlist is set.": "可选请求头，其取值用于在没有 JWT 身份的调用方中标识客户端。该值由客户端自行填写，因此属于策略约束而非安全凭据。",
+ "Publish an announcement to all dashboard users. Markdown is supported; the banner appears below the header on every page until you unpublish it. Users can dismiss it, and it reappears whenever the content changes.": "向所有面板用户发布公告。支持 Markdown；公告会显示在每页顶部导航下方，直到你撤下。用户可以自行关闭。",
+ "The alias is the name shown in the dashboard and gateway logs. The value is the exact JWT claim or header value that identifies the client, such as the OAuth client ID your identity provider issues.": "别名用于在面板和网关日志里展示这个客户端；取值是标识客户端的确切 JWT 声明或请求头值，例如 OAuth 的 client_id 声明。"
+}

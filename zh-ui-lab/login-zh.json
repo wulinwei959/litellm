@@ -1,0 +1,15 @@
+{
+ "Access your LiteLLM Admin UI.": "登录 LiteLLM 管理面板。",
+ "Default Credentials": "默认凭据",
+ "Check the documentation": "查看文档",
+ "Need to set UI credentials or SSO?": "需要配置面板凭据或单点登录？",
+ "Username": "用户名",
+ "Password": "密码",
+ "Enter your username": "请输入用户名",
+ "Enter your password": "请输入密码",
+ "Login with SSO": "使用单点登录",
+ "Admin UI Disabled": "管理面板已禁用",
+ "Choose a worker to connect to": "选择要连接的工作节点",
+ "Close": "关闭",
+ "Please configure SSO to log in with SSO.": "请先配置单点登录才能使用该方式登录。"
+}

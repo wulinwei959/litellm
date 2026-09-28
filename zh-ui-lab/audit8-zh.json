@@ -1,0 +1,9 @@
+{
+  "LiteLLM is OpenAI Compatible. This means your API Key works with the OpenAI SDK. Just replace the base_url to point to your litellm proxy. Example Below": "LiteLLM 兼容 OpenAI，你的 API 密钥可直接用于 OpenAI SDK，只需把 base_url 指向 LiteLLM 网关。示例如下",
+  "(cached input tokens from Anthropic, OpenAI, etc.) is not shown here; see \"Prompt Caching Metrics\" on the Usage page or individual requests in the Logs page.": "（来自 Anthropic、OpenAI 等的缓存输入 Token）不在这里统计，请在用量页查看“提示词缓存指标”，或在日志页查看单次请求。",
+  "Automatically add prompt caching breakpoints (cache_control markers) to requests made with this key, cutting input cost on repeated prompts. Applies to Anthropic and Bedrock Claude models; requests that already set their own cache_control markers are left untouched.": "自动为该密钥发起的请求插入提示词缓存断点（cache_control 标记），降低重复提示词的输入成本。适用于 Anthropic 与 Bedrock Claude 模型；已自带 cache_control 标记的请求不受影响。",
+  "Enable Prompt Caching": "启用提示词缓存",
+  "Prompt Caching Metrics": "提示词缓存指标",
+  "API Reference Docs": "API 参考文档",
+  "Learn more in the documentation": "详见文档"
+}
